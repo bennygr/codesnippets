@@ -2,7 +2,7 @@
 
 > A very basic and simple mvvm example
 
-## Further reading
+### Further reading
 
 * WPF Apps With The Model-View-ViewModel Design Pattern (Josh Smith):
 
