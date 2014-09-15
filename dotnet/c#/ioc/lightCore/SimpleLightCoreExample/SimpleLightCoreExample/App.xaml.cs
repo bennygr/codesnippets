@@ -13,17 +13,12 @@ namespace SimpleLightCoreExample
             ContainerBuilder builder = new ContainerBuilder();            
             
             //Registering contracts
-            Register<IDoSomething,ShowAText>(builder);
+            builder.Register<IDoSomething,ShowAText>();
             //Change to this line in order to change behavior 
             //Register<IDoSomething,DoNothing>(builder);
             
             IocContainer.Container = builder.Build();
             base.OnStartup(e);
-        }
-
-        public static void Register<TContract, TImplementation>(ContainerBuilder container)
-        {
-            container.Register(typeof (TContract), typeof (TImplementation));
-        }
+        }        
     }
 }
