@@ -5,7 +5,7 @@ public class JettyTest {
 	public static void main (String[] args)
 	{				
 		//Starting a jetty server		
-		try {
+		try {			
 			System.out.println("Simple Jetty Example saying \"Hello World\"!");
 			Server server = new Server(8080);
 			server.setHandler(new HelloWorldHandler());
