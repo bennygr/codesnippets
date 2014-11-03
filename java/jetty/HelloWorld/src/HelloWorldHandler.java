@@ -24,7 +24,8 @@ public class HelloWorldHandler extends AbstractHandler {
 					   HttpServletRequest request,
 					   HttpServletResponse response) throws IOException, ServletException {
 		
-		System.out.println("Handling a request...");
+		String requestTarget = "[" + target + "]";
+		System.out.println("Handling a request " + requestTarget +"...");
 		int c = getCounter();
 		
 		//Setting the Charset
@@ -38,7 +39,7 @@ public class HelloWorldHandler extends AbstractHandler {
         Date date = new Date();
         response.getWriter().println("<h1>Hello World<small>, request #" + c + "</small></h1>");       
         response.getWriter().println("The current local time is: " + date);        
-        System.out.println("Handled request #" + c + " at " + date);
+        System.out.println("Handled request #" + c + " " + requestTarget + " at " + date);
 	}
 	
 	private synchronized int getCounter()
