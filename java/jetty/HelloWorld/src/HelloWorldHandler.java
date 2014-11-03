@@ -13,8 +13,7 @@ public class HelloWorldHandler extends AbstractHandler {
 
 	private int counter;
 	
-	HelloWorldHandler()
-	{
+	HelloWorldHandler(){
 		counter = 0;
 	}
 	
@@ -42,8 +41,7 @@ public class HelloWorldHandler extends AbstractHandler {
         System.out.println("Handled request #" + c + " " + requestTarget + " at " + date);
 	}
 	
-	private synchronized int getCounter()
-	{		
+	private synchronized int getCounter() {		
 		return counter++;
 	}
 }
