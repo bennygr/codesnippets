@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Zusätzliche den Bal namespace zufügen-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"  
+     xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+    
+  <Bundle Name="SetupProject1" 
+          Version="1.0.0.0" 
+          Manufacturer="Jim Knopf" 
+          UpgradeCode="a52a3dbf-9b7a-4fc7-9be3-29df1873eb56">
+    <BootstrapperApplicationRef Id="ManagedBootstrapperApplicationHost" >
+      <!-- Adding payloads using $variables requires to add the additional projects as references
+           to the bootstrapper project-->
+      <!--Note: The bootstrapper configuration file has to be named BootstrapperCore.config
+          so thats the bootstrapper host can find it during runtime
+      -->
+      <Payload Name="BootstrapperCore.config" 
+               SourceFile="$(var.CustomBootstrapperCore.TargetDir)\CustomBootstrapperCore.config" />
+      <Payload SourceFile="$(var.CustomBootstrapperCore.TargetPath)" />
+      
+      <Payload SourceFile="C:\Program Files (x86)\WiX Toolset v3.7\SDK\Microsoft.Deployment.WindowsInstaller.dll"/>
+    </BootstrapperApplicationRef>
+
+    <!--Wichtig: bal:Overridable="yes", damit die Variable über die kommandozeile überschrieben werden kann-->
+    <Variable Name="GLOBALVAR" Value="117" bal:Overridable="yes"/>
+
+    <!--Eine Liste an elementen die der Reihe nach installiert werden sollen-->
+    <Chain>
+      <!-- Installer .NET if not allready installed -->
+      <!-- Install .Net 4 Full -->
+      <PackageGroupRef Id="NetFx45Web"/>
+
+      <!-- Installing Test-MSI 1-->
+      <MsiPackage SourceFile="..\SetupProject1\bin\Debug\SetupProject1.msi">
+        <!--Die Variable GLOBALVAR wird an das MSI übergeben-->
+        <MsiProperty Name="GLOBALVAR" Value="[GLOBALVAR]" />
+      </MsiPackage>
+
+      <!-- Installing Test-MSI 2-->
+      <MsiPackage SourceFile="..\SetupProject2\bin\Debug\SetupProject2.msi"/>
+    </Chain>
+    
+	</Bundle>
+
+
+
+
+</Wix>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	
+  <!--
+  Produktbeschreibung
+  ID:  Die eindeutige ID des Produkts: wichtig, damit der windows installer erkennt, 
+           wenn das Setup ein zweites mal ausgeführt wird und dann ein repair anbietet, anstatt das 
+           produkt ein zweites mal zu installieren
+   -->
+  <!--
+  ID = Ändert sich von version zu version
+  UpgradeCode bleibt immer gleich
+  -->
+  <Product            
+           Id="6437C122-58F5-4743-87CD-558169B19A2F" 
+           Name="SetupProjectHalloWelt"
+           Language="1033" 
+           Version="1.0.0.0" 
+           Manufacturer="Jim Knopf"             
+           UpgradeCode="8159c3d2-2a06-4279-9d61-ec84c51444c2">    
+		
+    <Package 
+        InstallerVersion="200" 
+        Compressed="yes" 
+        InstallScope="perMachine" 
+        Comments='SetuptProjectHalloWelt is a great project' 
+        Manufacturer='Jim Knopf'/>
+
+    <!--vordefinierten GUI Modus einbinden. 
+    (Referenz WixUIExtension wird benötigt)-->
+    <UIRef Id="WixUI_Mondo" />
+    
+    <!--Fehlermeldung ausgeben, falls eine neuere Version der Anwendung bereits installiert wurde-->
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    
+    <!--Zwingend benötigt: Media hanling-->
+    <!--Das Template automatisiert das für den "normalgebrauch"-->
+    <!--Ansonsten ist es zum Biepsiel möglich Installationsmedien wie CD1..CDn zu definieren-->
+    <MediaTemplate />
+        
+    <!--gültige Zielplatform prüfen-->
+    <!--http://wix.tramontana.co.hu/tutorial/getting-started/useful-extras-->
+    <!--<Condition Message='This application only runs on Windows 95/98/ME.'>
+      Version9X
+    </Condition>-->
+
+    <!--Verzeichnisstruktur der Anwendung definieren-->
+    <!--TARGETDIR UND SourceDir sind immer fest und definieren das root verzeichnis-->
+    <!--Es gibt vordefinierte Verzeichnisse z.B. ProgramFilesFolder-->
+    <Directory Id="TARGETDIR" Name="SourceDir"> 
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="SetupProject1">          
+          <Directory Id="Subfolder" Name="MySubfolder" />
+          <Directory Id="Subfolder2" Name="MySubfolder2" />
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <!--Um einem Verzeichnis Componenten/Dateien zuzufügen gibt es mehrere möglichkeiten
+    Man könnte die Componenten direkt in der Directory Struktur deklarieren.
+    Sauberer ist es, wenn man Componenten in Gruppen verpackt und auf die Verzeichnise mapped-->
+    <ComponentGroup Id="BasicComponents" Directory="INSTALLFOLDER">     
+      <!--Jede zu installierende Datei muss in einer Komponente verpackt werden-->
+      <Component Id="TestComponent" Guid="4CB4C247-E610-49E8-8190-6D9FA1DE99BE">
+        <!--Das KeyPath attribut versichert, dass beim Reparieren einer Installation die Datei wiederhergestellt wird, falls sie fehlt-->  
+        <!--In einer Komponente kann nur eine Date eine KeyFile sein, deswegen wird empfohlen jede Datei in eine eigene Komponente zu schreiben-->
+        <File Id='TESTDatei' Name='test.txt' Source='.\test.txt' KeyPath='yes'/>        
+      </Component>
+      <Component Id='TestComponent2' Guid="975A8776-83DC-4253-BB3D-5B52183B45C7">
+        <File Id='TESTDatei2' Name='test2.txt' Source='.\test2.txt' KeyPath='yes'/>
+      </Component>                     
+    </ComponentGroup>
+    
+    <ComponentGroup Id="SubComponents" Directory="Subfolder">
+      <Component Id='SubComponent' Guid="1964386E-0B09-4AB6-A53D-269E8AD58B46">
+        <File Id='Subfile' Name='Subfile.txt' Source='.\Subfile.txt' KeyPath='yes'/>
+      </Component>
+    </ComponentGroup>
+
+    <!--Über Features lassen sich die zu Installierenden Packete einer Anwendung definieren-->
+    <!--Jede Komponente muss einem Feature zugeordnet sein-->
+    <Feature Id="MainFeature" Title="Hauptprodukt" Level="1">            
+      <ComponentGroupRef Id="BasicComponents"/>
+      <ComponentGroupRef Id="SubComponents"/>      
+    </Feature>
+
+    <!--Festlegen einer Property
+    Properties können auch über die Kommandozeile beim Ausführen der Installation gesetzt werden
+    msiexec /i SetupProject1.msi myproperty=1 myproperty2=117
+    (Ein über die Komanndozeile gesetzer Wert überschreib einen vordefinierten Wert aus der *.wxs)-->
+    <Property Id="MYPROPERTY">117</Property>   
+
+    <!--
+    Mit einer Condition-Anweisung können verschiedene Voraussetzungen geprüft werden, die für die 
+    Installation erfüllt sein müssen die Fehlernachricht (+ Abbruch der Installation) wird dann 
+    augeführt, wenn die Bedingung NICHT erfüllt ist
+    -->
+    <Condition Message="Variable MYPROPERTY ist nicht '117'">
+      <![CDATA[MYPROPERTY = "117"]]>
+    </Condition>
+    
+    <!--
+    GLOBALVAR könnte, wie alle Properties, auch von außen übergeben werden, 
+    falls nicht definieren wir hier einen defaultwert von 117
+    -->
+    <Property Id="GLOBALVAR">117</Property>
+    <Condition Message="Die Variable GLOBALVAR hat einen ungültigen Wert(nicht 117)">
+      <![CDATA[GLOBALVAR = "117"]]>
+    </Condition>
+
+    <Property Id="CanInstallFeature2">1</Property>
+    
+    <!--Ein zusätzliches Feature. 
+    Über den Level lässt sich steuern, ob ein Feature installiert werden kann/darf oder nicht-->
+    <Feature Id="ZusatzFeature" Title="Zusatzfunktion"
+             Level="1">
+      <!--Diese Komponente ist in einer anderen Datei ausgelaget. 
+      Bei großen Projekten dient das der besseren Übersicht-->
+      <ComponentGroupRef Id="SubComponents2"/>
+
+      <!--Condition, die Prüft, ob dieses Feature installiert werden darf oder nicht,
+      falls nicht, wird der Level auf 0 herabgesetzt, sodass das Feature nicht mehr
+      verfügbar ist-->   
+      <!--ein Level = "2" deaktiviert as Feature per default-->
+      <Condition Level="0">
+        <![CDATA[NOT REMOVE = "ALL" AND CanInstallFeature2 <> "1"]]>
+      </Condition>
+    </Feature>
+
+
+
+  </Product>
+
+
+
+</Wix>
