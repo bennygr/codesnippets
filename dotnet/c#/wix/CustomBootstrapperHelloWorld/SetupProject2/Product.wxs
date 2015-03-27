@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	
+  <Product Id="6FF104D3-E8A0-4DA8-A0A4-394DB946227A" 
+           Name="SetupProject2" 
+           Language="1033" 
+           Version="1.0.0.0" 
+           Manufacturer="Jim Knopf" 
+           UpgradeCode="c001ec8f-197d-4f96-b086-4f93ca60d1e8">
+		
+    <Package InstallerVersion="200" 
+             Compressed="yes" 
+             InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="SetupProject2">          
+        </Directory>
+      </Directory>
+    </Directory>
+
+		<Feature Id="ProductFeature" Title="SetupProject2" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="TestComponent" Guid="EA3F96E8-3F36-46F0-9F1B-7BD5B93994D1">
+        <!--Das KeyPath attribut versichert, dass beim Reparieren einer Installation die Datei wiederhergestellt wird, falls sie fehlt-->
+        <!--In einer Komponente kann nur eine Date eine KeyFile sein, deswegen wird empfohlen jede Datei in eine eigene Komponente zu schreiben-->
+        <File Id='TESTDatei' Name='test2.txt' Source='.\test2.txt' KeyPath='yes'/>
+      </Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

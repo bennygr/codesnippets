@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <!--Ein Fragment ist ein allgemeiner Container für andere objekte
+  Er dient in erste Linie dazu, Komponenten und andere Objekte in andere Dateien auszulagern,
+  damit man bei großen Projekten nicht nur eine einzige große, schwierig zu lesende, WXS-Datei hat-->
+    <!--!! Hat man viele Dateien in einem Verzeichnis und möchte nicht jede Datei einzelnd hinzufügen,
+  kann man das tool heat.exe verwenden, um eine Fragmentdatei automatisiert erzeugen zu lassen.-->
+	<Fragment>
+    <ComponentGroup Id ="SubComponents2" Directory="Subfolder2">
+      <Component Id='SubComponent2' Guid="01A72D81-7F16-4A8B-ABD6-2DD69AAF6A4E">
+        <File Id='Subfile2' Name='Subfile2.txt' Source='.\Subfile2.txt' KeyPath='yes'/>
+      </Component>
+    </ComponentGroup>
+	</Fragment>
+</Wix>
