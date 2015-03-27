@@ -1,4 +1,4 @@
-var test = require('./testModule.js');
+var test = require('./testModule');
 var test2 = require('./testModule2.js');
 console.log("require tests");
 

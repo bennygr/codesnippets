@@ -1,0 +1,42 @@
+<!doctype html>
+<html ng-app="testApp">
+<head ng-controller="TestCtrl">
+	<meta charset="utf-8">
+	<title>Hello World</title>
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" ng-href="{{Theme}}">
+</head>
+<body ng-controller="TestCtrl">
+	<div class="container-fluid">
+		<h3>Hello {{Name}} ... <span class="label label-default">New</span></h3>
+		<button class="btn btn-default" 
+				type="submit"
+				ng-click="SwitchTheme(null)">Default</button>
+		<button class="btn btn-default" 
+				type="submit"
+				ng-click="SwitchTheme('app/css/themes/slate.min.css')">Slate</button>
+		<button class="btn btn-default" 
+				type="submit"
+				ng-click="SwitchTheme('app/css/themes/superhero.min.css')">Superhero</button>
+		<button class="btn btn-default" 
+				type="submit"
+				ng-click="SwitchTheme('app/css/themes/flatly.min.css')">Flatly</button>
+		<button class="btn btn-default" 
+				type="submit"
+				ng-click="SwitchTheme('app/css/themes/readable.min.css')">Readable</button>
+		<button class="btn btn-default" 
+				type="submit"
+				ng-click="SwitchTheme('app/css/themes/united.min.css')">United</button>
+		<button class="btn btn-default" 
+				type="submit"
+				ng-click="SwitchTheme('app/css/themes/cyborg.min.css')">Cyborg</button>
+	</div>
+
+	<!-- my scripts to load -->
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+	<script src="app/app.js"></script>
+	<script src="app/ThemeService.js"></script>
+	<script src="app/TestCtrl.js"></script>
+</body>
+</html>
