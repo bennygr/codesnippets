@@ -3,13 +3,12 @@
 
 int main(int argc, char **argv)
 {
-	QApplication app (argc, argv);
+    QApplication app (argc, argv);
 
-	QPushButton button ("Quit!");
-	button.show();
+    QPushButton button ("Quit!");
+    button.show();
 
-	QObject::connect(&button, SIGNAL(clicked()), &app, SLOT(quit()));
+    QObject::connect(&button, SIGNAL(clicked()), &app, SLOT(quit()));
 
-	return app.exec();
+    return app.exec();
 }
-
